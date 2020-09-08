@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<dotnetnuke type="Package" version="6.0">
+  <packages>
+    <package name="Upendo.Modules.CloudFlareClearCache" type="Module" version="01.00.00">
+      <friendlyName>CloudFlareClearCache Module</friendlyName>
+      <description>
+        <![CDATA[<p>Allows authorized end-users to clear the cache in CloudFlare.</p>]]>
+      </description>
+      <iconFile>DesktopModules/MVC/Upendo.Modules.CloudFlareClearCache/Images/logo.png</iconFile>
+      <owner>
+        <name>Will Strohl</name>
+        <organization>Upendo</organization>
+        <url><![CDATA[<a href="https://upendoventures.com" target="_blank">https://upendoventures.com</a>]]></url>
+        <email><![CDATA[<a href="mailto:solutions@upendoventures.com" target="_blank">solutions@upendoventures.com</a>]]></email>
+      </owner>
+      <license src="License.txt" />
+      <releaseNotes src="ReleaseNotes.txt" />
+      <azureCompatible>true</azureCompatible>
+      <dependencies>
+        <dependency type="coreversion">09.06.01</dependency>
+      </dependencies>
+      <components>
+
+        <component type="Module">
+          <desktopModule>
+            <moduleName>CloudFlareClearCache Module</moduleName>
+            <foldername>Upendo.Modules.CloudFlareClearCache</foldername>
+            <businessControllerClass>Upendo.Modules.CloudFlareClearCache.Components.FeatureController, Upendo.Modules.CloudFlareClearCache</businessControllerClass>
+            <supportedFeatures />
+            <moduleDefinitions>
+              <moduleDefinition>
+                <friendlyName>CloudFlareClearCache Module</friendlyName>
+                <defaultCacheTime>0</defaultCacheTime>
+                <moduleControls>
+                  <moduleControl>
+                    <controlKey />
+                    <controlSrc>Upendo.Modules.CloudFlareClearCache.Controllers/ClearCache/Index.mvc</controlSrc>
+                    <supportsPartialRendering>False</supportsPartialRendering>
+                    <controlTitle />
+                    <controlType>View</controlType>
+                    <iconFile />
+                    <helpUrl />
+                    <viewOrder>0</viewOrder>
+                  </moduleControl>
+                  <moduleControl>
+                    <controlKey>Settings</controlKey>
+                    <controlSrc>Upendo.Modules.CloudFlareClearCache.Controllers/Settings/Settings.mvc</controlSrc>
+                    <supportsPartialRendering>False</supportsPartialRendering>
+                    <controlTitle>CloudFlareClearCache Settings</controlTitle>
+                    <controlType>Edit</controlType>
+                    <iconFile />
+                    <helpUrl />
+                    <viewOrder>0</viewOrder>
+                  </moduleControl>
+                </moduleControls>
+              </moduleDefinition>
+            </moduleDefinitions>
+          </desktopModule>
+          <eventMessage>
+            <processorType>DotNetNuke.Entities.Modules.EventMessageProcessor, DotNetNuke</processorType>
+            <processorCommand>UpgradeModule</processorCommand>
+            <attributes>
+              <businessControllerClass>Upendo.Modules.CloudFlareClearCache.Components.FeatureController, Upendo.Modules.CloudFlareClearCache</businessControllerClass>
+              <desktopModuleID>[DESKTOPMODULEID]</desktopModuleID>
+              <upgradeVersionsList>01.00.00</upgradeVersionsList>
+            </attributes>
+          </eventMessage>
+        </component>
+
+        <component type="Assembly">
+          <assemblies>
+            <assembly>
+              <path>bin</path>
+              <name>Upendo.Modules.CloudFlareClearCache.dll</name>
+              <version>01.00.00</version>
+            </assembly>
+            <assembly>
+              <path>bin</path>
+              <name>RestEase.dll</name>
+              <version>01.00.00</version>
+            </assembly>
+          </assemblies>
+        </component>
+
+        <component type="ResourceFile">
+          <resourceFiles>
+            <basePath>DesktopModules/MVC/Upendo.Modules.CloudFlareClearCache</basePath>
+            <resourceFile>
+              <name>Resources.zip</name>
+            </resourceFile>
+          </resourceFiles>
+        </component>
+
+      </components>
+    </package>
+  </packages>
+</dotnetnuke>

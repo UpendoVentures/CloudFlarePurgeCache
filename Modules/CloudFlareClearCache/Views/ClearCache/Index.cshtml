@@ -1,0 +1,111 @@
+@inherits DotNetNuke.Web.Mvc.Framework.DnnWebViewPage<Upendo.Modules.CloudFlareClearCache.Models.ClearCacheInfo>
+@using DotNetNuke.Web.Mvc.Helpers
+@using ActionType = Upendo.Modules.CloudFlareClearCache.Components.ActionType
+
+<div id="Items-@Dnn.ModuleContext.ModuleId" class="section">
+    <div class="row">
+        <div class="col-sm-12">
+            <h2>@Dnn.LocalizeString("Header")</h2>
+            @if (Model == null || Model.Action == ActionType.Unknown || !ViewBag.ReadyToUse)
+            {
+                <div class="alert alert-info">
+                    <p>@Dnn.LocalizeString("NoSettings")</p>
+                </div>
+            }
+            else
+            {
+                if (ViewBag.Status == "success")
+                {
+                    <div id="divSuccess" class="alert alert-success">
+                        <p>@Html.Raw(Dnn.LocalizeString("Success"))</p>
+                    </div>
+                }
+                if (ViewBag.Status == "failure")
+                {
+                    <div id="divFailure" class="alert alert-danger">
+                        <p>@Html.Raw(Dnn.LocalizeString("Failure"))</p>
+                        <p id="pFailure">@ViewBag.ErrorMessage</p>
+                    </div>
+                }
+                <div class="form-group">
+                    <label id="lblCacheToClear" for="txtCacheToClear">@Dnn.LocalizeString("lblCacheToClear")</label>
+                    @Html.TextBoxFor(m => m.UrlPattern, new {maxlength = 255, @class = "form-control", required = "required", type = "text", @readonly = "readonly"})
+                </div>
+                @Html.HiddenFor(m => m.Action)
+                <button class="btn btn-primary d-inline" id="btnSubmit" type="submit">@Dnn.LocalizeString("Submit")</button>
+            }
+        </div>
+    </div>
+</div>
+@if (ViewBag.ReadyToUse)
+{
+    <script type="text/javascript">
+        var $lnkSubmit = {};
+        var $divSuccess = {};
+        var $divFailure = {};
+        var $pFailure = {};
+
+        (function ($) {
+            $(document).ready(function() {
+                $lnkSubmit = $("#lnkSubmit");
+                $divSuccess = $("#divSuccess");
+                $divFailure = $("#divFailure");
+                $pFailure = $("#pFailure");
+                /*
+                $divSuccess.hide();
+                $divFailure.hide();
+
+                $lnkSubmit.on("click",
+                    function(e) {
+                        e.preventDefault();
+                        $.ajax({
+                            url: "https://api.cloudflare.com/client/v4/zones/@Model.Config.ZoneID/purge_cache",
+                            type: "post",
+                            headers: {
+                                "X-Auth-Email": "@Model.Config.Email",
+                                "X-Auth-Key": "@Model.Config.ApiToken",
+                                "Content-Type": "application/json",
+                                "Access-Control-Allow-Origin": "https://api.cloudflare.com",
+                                "Access-Control-Allow-Headers": "*"
+                            },
+                            crossDomain: true,
+                            data: { "purge_everything": true },
+                            dataType: "json",
+                            success: function (jqXHR, textStatus) {
+                                var response = JSON.parse(data);
+                                console.log(textStatus);
+                                console.log(response);
+                                if (response.success){
+                                    showSuccess();
+                                }
+                                else {
+                                    $pFailure.text(response.errors[0].message);
+                                    showFailure();
+                                }
+                            },
+                            error: function (jqXHR, textStatus, errorThrown) {
+                                console.log(textStatus);
+                                console.log(errorThrown);
+                                $pFailure.text(errorThrown);
+                                showFailure();
+                            },
+                            complete: function (jqXHR, textStatus) {
+                                console.log(textStatus);
+                                return false;
+                            }
+                    });
+                });*/
+            });
+        })(jQuery);
+
+        function showSuccess() {
+            $divSuccess.show();
+            $divFailure.hide();
+        }
+
+        function showFailure() {
+            $divSuccess.hide();
+            $divFailure.show();
+        }
+    </script>
+}

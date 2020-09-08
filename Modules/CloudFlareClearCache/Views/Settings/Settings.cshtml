@@ -1,0 +1,24 @@
+@inherits DotNetNuke.Web.Mvc.Framework.DnnWebViewPage <Upendo.Modules.CloudFlareClearCache.Models.Settings>
+@using DotNetNuke.Web.Mvc.Helpers
+
+<h2 id="dnnSitePanel-BasicSettings" class="dnnFormSectionHead"><a href="" class="dnnSectionExpanded">@Dnn.LocalizeString("BasicSettings")</a></h2>
+<fieldset>
+    <div class="dnnFormItem">
+        <div class="dnnLabel" style="position: relative;">
+            @Html.LabelFor(m => Model.ZoneID, new { @class = "col-md-2 control-label" })
+        </div>
+        @Html.TextBoxFor(m => Model.ZoneID)
+    </div>
+    <div class="dnnFormItem">
+        <div class="dnnLabel" style="position: relative;">
+            @Html.LabelFor(m => Model.ApiToken, new { @class = "col-md-2 control-label" })
+        </div>
+        @Html.TextBoxFor(m => Model.ApiToken, new { placeholder = @Dnn.LocalizeString("phApiToken") })
+    </div>
+    <div class="dnnFormItem">
+        <div class="dnnLabel" style="position: relative;">
+            @Html.LabelFor(m => Model.Email, new { @class = "col-md-2 control-label" })
+        </div>
+        @Html.TextBoxFor(m => Model.Email)
+    </div>
+</fieldset>
