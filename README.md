@@ -1,16 +1,17 @@
 # CloudFlare Purge Cache Module for DNN  
 This open-source module allows you to authorize end-users to be able to clear the cache on CloudFlare with a single click.  
 
+## Features  
+* Empowers site administrators to purge the cache in CloudFlare to aid with user experience and/or troubleshoot cache-related issues.  
+* Saves the API token/key and Zone ID using FIPS encryption.  
+* Never shows the API token/key after first save.  
+* Includes thorough logging details for initial implementation troubleshooting.  
+
 ## How to Use  
-1. Install like normal.  
-2. The module will create a CloudFlare Cache link for you in the persona bar and add the module to the page for you.  
-3. Update the module settings to add your ZoneID, API Key (token), and account e-mail address.  
-4. Save the changes and you're up and running!  
+Please [refer to this project's Wiki](https://github.com/UpendoVentures/CloudFlarePurgeCache/wiki).  
 
 ## How to Troubleshoot  
-If you're running into issues, update the DotNetNuke.Log4Net.config file in the root of your website to have the Debug setting turned on like seen below.  
-
-`<level value="Debug" />`
+Please [refer to this project's Wiki](https://github.com/UpendoVentures/CloudFlarePurgeCache/wiki).  
 
 ## Thank You  
 Huge thanks to [David Poindexter](https://github.com/david-poindexter) and [Daniel Valadas](https://github.com/valadas) for getting this first release ready.  
