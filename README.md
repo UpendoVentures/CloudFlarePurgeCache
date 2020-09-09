@@ -17,7 +17,7 @@ Please [refer to this project's Wiki](https://github.com/UpendoVentures/CloudFla
 Please [refer to this project's Wiki](https://github.com/UpendoVentures/CloudFlarePurgeCache/wiki).  
 
 ## Thank You  
-Huge thanks to [David Poindexter](https://github.com/david-poindexter) and [Daniel Valadas](https://github.com/valadas) for getting this first release ready.  
+Huge thanks to [David Poindexter](https://github.com/david-poindexter) and [Daniel Valadas](https://github.com/valadas) for helping with the first release.  
 
 # **A Special Note to ALL Developers...**  
 Please do not begin any development until you first read through and understand all of the notes in the README below.  
