@@ -1,6 +1,8 @@
 # CloudFlare Purge Cache Module for DNN  
 This open-source module allows you to authorize end-users to be able to clear the cache on CloudFlare with a single click.  
 
+To learn more about DNN, please refer to [the Official DNN Community website](https://dnncommunity.org).  
+
 ## Features  
 * Empowers site administrators to purge the cache in CloudFlare to aid with user experience and/or troubleshoot cache-related issues.  
 * Automatically creates an Admin-level page and adds the module to it upon installation.  
