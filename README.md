@@ -3,6 +3,7 @@ This open-source module allows you to authorize end-users to be able to clear th
 
 ## Features  
 * Empowers site administrators to purge the cache in CloudFlare to aid with user experience and/or troubleshoot cache-related issues.  
+* Automatically creates an Admin-level page and adds the module to it upon installation.  
 * Saves the API token/key and Zone ID using FIPS encryption.  
 * Never shows the API token/key after first save.  
 * Includes thorough logging details for initial implementation troubleshooting.  
