@@ -107,14 +107,7 @@ namespace Upendo.Modules.CloudFlareClearCache.Controllers
                     //if (originalStatus.LastModifiedOnDate != currentStatus.LastModifiedOnDate)
                     if (result)
                     {
-                        if (currentStatus.SettingValue == "true")
-                        {
-                            ViewBag.Status = "success";
-                        }
-                        else
-                        {
-                            ViewBag.Status = "failure";
-                        }
+                        ViewBag.Status = string.Equals(currentStatus.SettingValue, "true", StringComparison.OrdinalIgnoreCase) ? "success" : "failure";
                     }
                     else
                     {

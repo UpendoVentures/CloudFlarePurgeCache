@@ -28,6 +28,7 @@ using System.Net;
 using System.Text;
 using DotNetNuke.Instrumentation;
 using Upendo.Modules.CloudFlareClearCache.Components;
+using Upendo.Modules.CloudFlareClearCache.Models;
 
 namespace Upendo.Modules.CloudFlareClearCache.Services
 {
@@ -46,6 +47,12 @@ namespace Upendo.Modules.CloudFlareClearCache.Services
             where T : class, new()
         {
             var result = SendWithData<T>(uri, "POST", data, contentType, customHeaders);
+            return result;
+        }
+
+        public static ServiceResponse<CloudFlareResponse> PostRequest(string uri, string data, string contentType = "", Dictionary<string, string> customHeaders = null)
+        {
+            var result = SendWithData(uri, "POST", data, contentType, customHeaders);
             return result;
         }
 
@@ -106,6 +113,7 @@ namespace Upendo.Modules.CloudFlareClearCache.Services
                 Logger.Debug(response.ToString());
                 
                 var result = JsonHelper.ObjectFromJson<T>(response);
+                //var result = DotNetNuke.Common.Utilities.Json.Deserialize<T>(response);
                 
                 return result;
             }
@@ -114,6 +122,37 @@ namespace Upendo.Modules.CloudFlareClearCache.Services
                 LogError(ex);
 
                 var result = new T();
+                var apiResponse = result as IServiceResponse;
+
+                if (apiResponse != null)
+                {
+                    apiResponse.Errors.Add(new ServiceError("EXCEPTION", ex.Message + " | " + ex.StackTrace));
+                }
+
+                return result;
+            }
+        }
+
+        private static ServiceResponse<CloudFlareResponse> SendWithData(string uri, string method, string data, string contentType = "", Dictionary<string, string> customHeaders = null)
+        {
+            try
+            {
+                var strResponse = SendRequest(uri, method, data, contentType, customHeaders);
+
+                var oResult = new ServiceResponse<CloudFlareResponse>();
+
+                //Logger.Debug(response.ToString());
+
+                oResult.Content= JsonHelper.ObjectFromJson<CloudFlareResponse>(strResponse);
+                //var result = DotNetNuke.Common.Utilities.Json.Deserialize<T>(response);
+
+                return oResult;
+            }
+            catch (Exception ex)
+            {
+                LogError(ex);
+
+                var result = new ServiceResponse<CloudFlareResponse>();
                 var apiResponse = result as IServiceResponse;
 
                 if (apiResponse != null)
@@ -176,6 +215,19 @@ namespace Upendo.Modules.CloudFlareClearCache.Services
                 if (proxy != null)
                 {
                     objReq.Proxy = proxy;
+                }
+
+                Logger.Debug($"Request RequestUri: {objReq.RequestUri}");
+                Logger.Debug($"Request ContentType: {objReq.ContentType}");
+                Logger.Debug($"Request Method: {objReq.Method}");
+                for (int i = 0; i < objReq.Headers.Count; ++i)
+                {
+                    string header = objReq.Headers.GetKey(i);
+                    foreach (var value in objReq.Headers.GetValues(i))
+                    {
+                        Logger.Debug($"Request Header Key: {header}");
+                        Logger.Debug($"Request Header Value: {value}");
+                    }
                 }
 
                 if (byteReq != null)

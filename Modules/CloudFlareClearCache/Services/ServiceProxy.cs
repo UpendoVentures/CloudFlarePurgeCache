@@ -55,7 +55,8 @@ namespace Upendo.Modules.CloudFlareClearCache.Services
 
                 Logger.Debug($"Calling: {fullRequestUri}");
 
-                result = ServiceHelper.PostRequest<ServiceResponse<CloudFlareResponse>>(fullRequestUri, "{ \"purge_everything\" : true }", "application/json", customHeaders);
+                //result = ServiceHelper.PostRequest<ServiceResponse<CloudFlareResponse>>(fullRequestUri, "{ \"purge_everything\" : true }", "application/json", customHeaders);
+                result = ServiceHelper.PostRequest(fullRequestUri, "{ \"purge_everything\" : true }", "application/json", customHeaders);
 
                 return result;
             }

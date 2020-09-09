@@ -29,9 +29,8 @@ using Newtonsoft.Json;
 namespace Upendo.Modules.CloudFlareClearCache.Models
 {
     [DataContract]
-    [JsonObject(MemberSerialization.OptIn)]
     [Serializable]
-    public class CloudFlareResponse : ICloudFlareResponse, IDisposable
+    public class CloudFlareResponse : ICloudFlareResponse
     {
         [DataMember(Name = "result")]
         [JsonProperty(PropertyName = "result")]
@@ -48,15 +47,9 @@ namespace Upendo.Modules.CloudFlareClearCache.Models
         [DataMember(Name = "messages")]
         [JsonProperty(PropertyName = "messages")]
         public List<string> Messages { get; set; }
-
-        public void Dispose()
-        {
-            // do nothing
-        }
     }
 
     [DataContract]
-    [JsonObject(MemberSerialization.OptIn)]
     [Serializable]
     public class CloudFlareResult : ICloudFlareResult
     {
@@ -66,7 +59,6 @@ namespace Upendo.Modules.CloudFlareClearCache.Models
     }
 
     [DataContract]
-    [JsonObject(MemberSerialization.OptIn)]
     [Serializable]
     public class CloudFlareError : ICloudFlareError
     {
