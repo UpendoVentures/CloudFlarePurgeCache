@@ -6,6 +6,12 @@
 	<h2>CloudFlareClearCache Modules Extension for DNN</h2>
 	<p>This DNN module allows site owners to delegate the ability for authorized end-users to purge the website cache at CloudFlare.</p>
 
+	<p>Version 01.00.01</p>
+	<ul>
+		<li>Resolves a bug with subsequent saves of module settings.</li>
+		<li>Restores a debugging message that was commented out.</li>
+	</ul>
+
 	<p>Version 01.00.00</p>
 	<ul>
 		<li>First release.</li>

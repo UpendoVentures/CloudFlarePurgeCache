@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <dotnetnuke type="Package" version="6.0">
   <packages>
-    <package name="Upendo.Modules.CloudFlareClearCache" type="Module" version="01.00.00">
+    <package name="Upendo.Modules.CloudFlareClearCache" type="Module" version="01.00.01">
       <friendlyName>CloudFlareClearCache Module</friendlyName>
       <description>
         <![CDATA[<p>Allows authorized end-users to clear the cache in CloudFlare.</p>]]>
@@ -62,7 +62,7 @@
             <attributes>
               <businessControllerClass>Upendo.Modules.CloudFlareClearCache.Components.FeatureController, Upendo.Modules.CloudFlareClearCache</businessControllerClass>
               <desktopModuleID>[DESKTOPMODULEID]</desktopModuleID>
-              <upgradeVersionsList>01.00.00</upgradeVersionsList>
+              <upgradeVersionsList>01.00.00,01.00.01</upgradeVersionsList>
             </attributes>
           </eventMessage>
         </component>
@@ -72,12 +72,7 @@
             <assembly>
               <path>bin</path>
               <name>Upendo.Modules.CloudFlareClearCache.dll</name>
-              <version>01.00.00</version>
-            </assembly>
-            <assembly>
-              <path>bin</path>
-              <name>RestEase.dll</name>
-              <version>01.00.00</version>
+              <version>01.00.01</version>
             </assembly>
           </assemblies>
         </component>

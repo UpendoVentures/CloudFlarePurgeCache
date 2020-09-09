@@ -141,10 +141,9 @@ namespace Upendo.Modules.CloudFlareClearCache.Services
 
                 var oResult = new ServiceResponse<CloudFlareResponse>();
 
-                //Logger.Debug(response.ToString());
+                Logger.Debug(strResponse.ToString());
 
                 oResult.Content= JsonHelper.ObjectFromJson<CloudFlareResponse>(strResponse);
-                //var result = DotNetNuke.Common.Utilities.Json.Deserialize<T>(response);
 
                 return oResult;
             }

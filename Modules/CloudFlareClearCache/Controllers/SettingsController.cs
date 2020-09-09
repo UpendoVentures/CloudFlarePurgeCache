@@ -21,6 +21,8 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
+
+using System;
 using DotNetNuke.Collections;
 using DotNetNuke.Security;
 using DotNetNuke.Web.Mvc.Framework.ActionFilters;
@@ -69,23 +71,38 @@ namespace Upendo.Modules.CloudFlareClearCache.Controllers
         public ActionResult Settings(Models.Settings settings)
         {
 			var security = new PortalSecurity();
-            var apiToken = security.InputFilter(settings.ApiToken.Trim(), PortalSecurity.FilterFlag.NoMarkup);
-            var email = security.InputFilter(settings.Email.Trim(), PortalSecurity.FilterFlag.NoMarkup);
-            var zoneId = security.InputFilter(settings.ZoneID.Trim(), PortalSecurity.FilterFlag.NoMarkup);
 
-            if (!string.IsNullOrEmpty(apiToken))
+            if (!string.IsNullOrEmpty(settings.ZoneID))
             {
-                apiToken = FIPSCompliant.EncryptAES(apiToken, Config.GetDecryptionkey(), PortalSettings.GUID.ToString());
+                settings.ZoneID = security.InputFilter(settings.ZoneID.Trim(), PortalSecurity.FilterFlag.NoMarkup);
+                settings.ZoneID = FIPSCompliant.EncryptAES(settings.ZoneID, Config.GetDecryptionkey(), PortalSettings.GUID.ToString());
+                ModuleContext.Configuration.ModuleSettings[FeatureController.SETTING_ZONEID] = settings.ZoneID;
+            }
+            else
+            {
+                ModuleContext.Configuration.ModuleSettings[FeatureController.SETTING_ZONEID] = string.Empty;
             }
 
-            if (!string.IsNullOrEmpty(zoneId))
+            if (string.Equals(settings.ApiToken, "clear", StringComparison.OrdinalIgnoreCase))
             {
-                zoneId = FIPSCompliant.EncryptAES(zoneId, Config.GetDecryptionkey(), PortalSettings.GUID.ToString());
+                ModuleContext.Configuration.ModuleSettings[FeatureController.SETTING_APITOKEN] = string.Empty;
+            }
+            else if (!string.IsNullOrEmpty(settings.ApiToken))
+            {
+                settings.ApiToken = security.InputFilter(settings.ApiToken.Trim(), PortalSecurity.FilterFlag.NoMarkup);
+                settings.ApiToken = FIPSCompliant.EncryptAES(settings.ApiToken, Config.GetDecryptionkey(), PortalSettings.GUID.ToString());
+                ModuleContext.Configuration.ModuleSettings[FeatureController.SETTING_APITOKEN] = settings.ApiToken;
             }
 
-            ModuleContext.Configuration.ModuleSettings[FeatureController.SETTING_APITOKEN] = apiToken;
-            ModuleContext.Configuration.ModuleSettings[FeatureController.SETTING_EMAIL] = email;
-            ModuleContext.Configuration.ModuleSettings[FeatureController.SETTING_ZONEID] = zoneId;
+            if (!string.IsNullOrEmpty(settings.Email))
+            {
+                settings.Email = security.InputFilter(settings.Email.Trim(), PortalSecurity.FilterFlag.NoMarkup);
+                ModuleContext.Configuration.ModuleSettings[FeatureController.SETTING_EMAIL] = settings.Email;
+            }
+            else
+            {
+                ModuleContext.Configuration.ModuleSettings[FeatureController.SETTING_EMAIL] = string.Empty;
+            }
 
             return RedirectToDefaultRoute();
         }
