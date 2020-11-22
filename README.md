@@ -3,6 +3,8 @@ This open-source module allows you to authorize end-users to be able to clear th
 
 To learn more about DNN, please refer to [the Official DNN Community website](https://dnncommunity.org).  
 
+This module is created and maintained by [Upendo Ventures](https://upendoventures.com) for the [DNN CMS Community](https://dnncommunity.org). Please consider [sponsoring us](https://github.com/sponsors/hismightiness) for this and the many other open-source efforts we do.  
+
 ## Features  
 * Empowers site administrators to purge the cache in CloudFlare to aid with user experience and/or troubleshoot cache-related issues.  
 * Automatically creates an Admin-level page and adds the module to it upon installation.  
