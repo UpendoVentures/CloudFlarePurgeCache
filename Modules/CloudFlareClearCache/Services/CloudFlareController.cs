@@ -85,13 +85,21 @@ namespace Upendo.Modules.CloudFlareClearCache.Services
 
         private Dictionary<string, string> GetCustomHeaders(Settings moduleSettings)
         {
-            var newHeaders = new Dictionary<string, string>
+            if (string.IsNullOrEmpty(moduleSettings.Email))
             {
-                {"X-Auth-Key", moduleSettings.ApiToken}, 
-                {"X-Auth-Email", moduleSettings.Email}
-            };
-
-            return newHeaders;
+                return new Dictionary<string, string>
+                {
+                    {"Authorization", string.Concat("Bearer ", moduleSettings.ApiToken)}
+                };
+            }
+            else
+            {
+                return new Dictionary<string, string>
+                {
+                    {"X-Auth-Key", moduleSettings.ApiToken},
+                    {"X-Auth-Email", moduleSettings.Email}
+                };
+            }
         }
 
         private void LogError(Exception exc)
