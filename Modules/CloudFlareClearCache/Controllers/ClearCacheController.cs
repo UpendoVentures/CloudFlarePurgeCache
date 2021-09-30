@@ -171,6 +171,7 @@ namespace Upendo.Modules.CloudFlareClearCache.Controllers
             return (!string.IsNullOrEmpty(model.Config.ApiToken) && 
                     !string.IsNullOrEmpty(model.Config.Email) &&
                     !string.IsNullOrEmpty(model.Config.ZoneID));
+            return (!string.IsNullOrEmpty(model.Config.ApiToken) && !string.IsNullOrEmpty(model.Config.ZoneID));
         }
 
         private PortalSetting GetPortalSetting(int portalId)
