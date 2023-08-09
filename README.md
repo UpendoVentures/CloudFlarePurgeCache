@@ -3,8 +3,6 @@ This open-source module allows you to authorize end-users to be able to clear th
 
 To learn more about DNN, please refer to [the Official DNN Community website](https://dnncommunity.org).  
 
-This module is created and maintained by [Upendo Ventures](https://upendoventures.com) for the [DNN CMS Community](https://dnncommunity.org). Please consider [sponsoring us](https://github.com/sponsors/hismightiness) for this and the many other open-source efforts we do.  
-
 ## Features  
 * Empowers site administrators to purge the cache in CloudFlare to aid with user experience and/or troubleshoot cache-related issues.  
 * Automatically creates an Admin-level page and adds the module to it upon installation.  
@@ -20,6 +18,29 @@ Please [refer to this project's Wiki](https://github.com/UpendoVentures/CloudFla
 
 ## Thank You  
 Huge thanks to [David Poindexter](https://github.com/david-poindexter) and [Daniel Valadas](https://github.com/valadas) for helping with the first release.  
+
+> Special Note from Will Strohl:  I personally sponsor both of the above DNN veterans! :)  
+
+<hr />  
+
+## `Sponsors == (typeOf superHuman) Awesome;`  
+
+> Yes, it's not real code. It's just supposed to be fun. :P
+
+This solution is created and maintained by [Upendo Ventures](https://upendoventures.com/What/CMS/DNN) for the [DNN CMS Community](https://dnncommunity.org). Please consider [sponsoring us](https://github.com/sponsors/UpendoVentures) for this and [the many other open-source efforts we do](https://upendoventures.com/What/CMS/DNN/Extensions).  It's a lot.  :)  
+
+- [Sponsor Us](https://github.com/sponsors/UpendoVentures) (we're grateful at any level 🙏🏽)  
+
+<hr />  
+
+# Developers Only 🤓  
+
+If you're not a developer, the rest of this README is not going to interest you. 😉  
+
+
+This solution was built using the [Upendo DNN Generator](https://github.com/UpendoVentures/generator-upendodnn#readme).  
+
+<hr />
 
 # **A Special Note to ALL Developers...**  
 Please do not begin any development until you first read through and understand all of the notes in the README below.  
