@@ -1,19 +1,39 @@
 <style>
 	div.uv-install-wrapper h3, div.uv-install-wrapper h4, div.uv-install-wrapper p, div.uv-install-wrapper hr, div.uv-install-wrapper ul { margin-bottom: 0.5em; }
 	div.uv-install-wrapper ul { padding-left: 2em; }
+	.muy-importante { color:red;font-weight:bold; }
 </style>
 <div class="uv-install-wrapper">
-	<h2>CloudFlareClearCache Modules Extension for DNN</h2>
-	<p>This DNN module allows site owners to delegate the ability for authorized end-users to purge the website cache at CloudFlare.</p>
 
-	<p>Version 01.00.01</p>
-	<ul>
-		<li>Resolves a bug with subsequent saves of module settings.</li>
-		<li>Restores a debugging message that was commented out.</li>
-	</ul>
+	<h1>CloudFlareClearCache Modules Extension for DNN</h1>
+	
+	<hr />
+	<div class="dnnClear">
+		<p>This DNN module allows site owners to delegate the ability for authorized end-users to purge the website cache at CloudFlare.</p>
 
-	<p>Version 01.00.00</p>
-	<ul>
-		<li>First release.</li>
-	</ul>
+		<h2>Version 01.01.00</h2>
+		<h3>Features &amp; Enhancements</h3>
+		<ul>
+			<li>Raises the minimum DNN version to 10.2. (<a href="https://github.com/UpendoVentures/CloudFlarePurgeCache/issues/76" target="_blank">Issue 76</a>, thanks <a href="https://github.com/WillStrohl" target="_blank">@WillStrohl</a>!)</li>
+			<li>Adds tokenization support. (<a href="https://github.com/UpendoVentures/CloudFlarePurgeCache/issues/3" target="_blank">Issue 3</a>, thanks <a href="https://github.com/MikeSQ" target="_blank">@MikeSQ</a>!)</li>
+		</ul>
+		<h3>Maintenance Updates</h3>
+		<ul>
+			<li>None at this time.</li>
+		</ul>
+		<hr />
+
+		<h2>Version 01.00.01</h2>
+		<ul>
+			<li>Resolves a bug with subsequent saves of module settings.</li>
+			<li>Restores a debugging message that was commented out.</li>
+		</ul>
+		<hr />
+
+		<h2>Version 01.00.00</h2>
+		<ul>
+			<li>First release.</li>
+		</ul>
+
+	</div>
 </div>
