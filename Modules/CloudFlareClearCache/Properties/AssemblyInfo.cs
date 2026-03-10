@@ -8,9 +8,9 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("CloudFlareClearCache Modules Extension for DNN")]
 [assembly: AssemblyDescription("Allows authorized end-users to clear the cache in CloudFlare.")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Upendo")]
+[assembly: AssemblyCompany("Upendo Ventures, LLC")]
 [assembly: AssemblyProduct("CloudFlareClearCache Modules Extension for DNN")]
-[assembly: AssemblyCopyright("Copyright 2020 Upendo")]
+[assembly: AssemblyCopyright("Copyright Upendo Ventures, LLC")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -29,5 +29,5 @@ using System.Runtime.InteropServices;
 //      Build Number
 //      Revision
 //
-[assembly: AssemblyVersion("01.00.01")]
-[assembly: AssemblyFileVersion("01.00.01")]
+[assembly: AssemblyVersion("01.01.00")]
+[assembly: AssemblyFileVersion("01.01.00")]

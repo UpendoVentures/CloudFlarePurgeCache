@@ -21,11 +21,8 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.InteropServices;
+using DotNetNuke.Abstractions.Logging;
+using DotNetNuke.Abstractions.Portals;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Data;
 using DotNetNuke.Entities.Modules;
@@ -37,12 +34,17 @@ using DotNetNuke.Instrumentation;
 using DotNetNuke.Security.Permissions;
 using DotNetNuke.Services.Log.EventLog;
 using DotNetNuke.Services.Upgrade;
+using System;
+using System.Linq;
+using DotNetNuke.Abstractions.Security.Permissions;
 
 namespace Upendo.Modules.CloudFlareClearCache.Components
 {
     public class FeatureController : IUpgradeable
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(FeatureController));
+        private static IEventLogger _eventLogger;
+        private static IPermissionDefinitionService _permissionService;
 
         public const string SETTING_APITOKEN = "Upendo.Modules.CloudFlareClearCache_ApiToken";
         public const string SETTING_EMAIL = "Upendo.Modules.CloudFlareClearCache_Email";
@@ -50,6 +52,12 @@ namespace Upendo.Modules.CloudFlareClearCache.Components
 
         public const string SETTING_STATUS = "uvm_CloudFlareClearCache_Status";
         public const string LOGTYPEKEY = "uvm_CloudFlarePurgeCache";
+        
+        public FeatureController(IEventLogger eventLogger, IPermissionDefinitionService permissionService)
+        {
+            _eventLogger = eventLogger;
+            _permissionService = permissionService;
+        }
 
         public string UpgradeModule(string Version)
         {
@@ -75,7 +83,7 @@ namespace Upendo.Modules.CloudFlareClearCache.Components
         private void AddAdminPageToAllPortals()
         {
             var tabCtl = new TabController();
-            var portals = new PortalController().GetPortals().OfType<PortalInfo>();
+            var portals = PortalController.Instance.GetPortals().OfType<IPortalInfo>();
 
             foreach (var portal in portals)
             {
@@ -83,20 +91,20 @@ namespace Upendo.Modules.CloudFlareClearCache.Components
             }
         }
 
-        internal static void AddAdminPage(TabController tabCtl, PortalInfo portal)
+        internal static void AddAdminPage(TabController tabCtl, IPortalInfo portal)
         {
             try
             {
                 var desktopModule = DesktopModuleController.GetDesktopModuleByFriendlyName("CloudFlareClearCache Module");
                 var pageName = "CloudFlare Cache";
-                var tabPath = string.Format("//{0}//{1}", portal.PortalID == Null.NullInteger ? "Host" : "Admin", pageName);
-                var tabId = TabController.GetTabByTabPath(portal.PortalID, tabPath, Null.NullString);
-                var existTab = TabController.Instance.GetTab(tabId, portal.PortalID);
+                var tabPath = string.Format("//{0}//{1}", portal.PortalId == Null.NullInteger ? "Host" : "Admin", pageName);
+                var tabId = TabController.GetTabByTabPath(portal.PortalId, tabPath, Null.NullString);
+                var existTab = TabController.Instance.GetTab(tabId, portal.PortalId);
 
                 if (existTab == null || existTab.TabID == Null.NullInteger)
                 {
                     existTab = Upgrade.AddAdminPage(
-                        PortalController.Instance.GetPortal(portal.PortalID),
+                        PortalController.Instance.GetPortal(portal.PortalId),
                         pageName,
                         pageName,
                         "~/Icons/Sigma/Configuration_16X16_Standard.png",
@@ -153,18 +161,16 @@ namespace Upendo.Modules.CloudFlareClearCache.Components
                 if (portalDesktopModule == null)
                 {
                     portalDesktopModuleID = DataProvider.Instance().AddPortalDesktopModule(portalId, desktopModuleId, UserController.Instance.GetCurrentUserInfo().UserID);
-                    EventLogController.Instance.AddLog(
+                    _eventLogger.AddLog(
                         "PortalDesktopModuleID",
-                        portalDesktopModuleID.ToString(),
-                        PortalController.Instance.GetCurrentPortalSettings(),
-                        UserController.Instance.GetCurrentUserInfo().UserID,
-                        EventLogController.EventLogType.PORTALDESKTOPMODULE_CREATED);
+                        portalDesktopModuleID.ToString(), 
+                        EventLogType.PORTALDESKTOPMODULE_CREATED);
                     if (addPermissions)
                     {
-                        ArrayList permissions = PermissionController.GetPermissionsByPortalDesktopModule();
-                        if (permissions.Count > 0)
+                        var permissions = _permissionService.GetDefinitionsByPortalDesktopModule();
+                        if (permissions != null && permissions.Any())
                         {
-                            var permission = permissions[0] as PermissionInfo;
+                            var permission = permissions.FirstOrDefault() as PermissionInfo;
                             PortalInfo objPortal = PortalController.Instance.GetPortal(portalId);
                             if (permission != null && objPortal != null)
                             {
@@ -205,7 +211,7 @@ namespace Upendo.Modules.CloudFlareClearCache.Components
                 return;
             }
 
-            var logTypeInfo = new LogTypeInfo
+            ILogTypeInfo logTypeInfo = new LogTypeInfo
             {
                 LogTypeKey = LOGTYPEKEY,
                 LogTypeFriendlyName = "CloudFlare: Purge Cache",
@@ -213,10 +219,10 @@ namespace Upendo.Modules.CloudFlareClearCache.Components
                 LogTypeCSSClass = "GeneralAdminOperation",
                 LogTypeOwner = "Upendo.Logging.PurgeCloudFlareCacheLogType"
             };
-            LogController.Instance.AddLogType(logTypeInfo);
+            LogController.Instance.AddLogType((LogTypeInfo)logTypeInfo);
 
             // Add LogType
-            var logTypeConf = new LogTypeConfigInfo
+            ILogTypeConfigInfo logTypeConf = new LogTypeConfigInfo
             {
                 LoggingIsActive = true,
                 LogTypeKey = LOGTYPEKEY,
@@ -228,7 +234,7 @@ namespace Upendo.Modules.CloudFlareClearCache.Components
                 MailToAddress = Null.NullString,
                 LogTypePortalID = "*"
             };
-            LogController.Instance.AddLogTypeConfigInfo(logTypeConf);
+            LogController.Instance.AddLogTypeConfigInfo((LogTypeConfigInfo)logTypeConf);
         }
 
         private bool DoesLogTypeExist(string logTypeKey)

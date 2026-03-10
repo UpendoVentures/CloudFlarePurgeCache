@@ -23,6 +23,7 @@ SOFTWARE.
 */
 using System;
 using System.Collections.Generic;
+using DotNetNuke.Abstractions.Logging;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Instrumentation;
 using DotNetNuke.Services.Log.EventLog;
@@ -34,6 +35,14 @@ namespace Upendo.Modules.CloudFlareClearCache.Services
     public class CloudFlareController
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(CloudFlareController));
+        private readonly IPortalController portalController;
+        private readonly IEventLogService logService;
+        
+        public CloudFlareController(IPortalController portalController, IEventLogService logService)
+        {
+            this.portalController = portalController;
+            this.logService = logService;
+        }
 
         public bool PurgeCache(Settings moduleSettings, int portalId)
         {
@@ -71,11 +80,10 @@ namespace Upendo.Modules.CloudFlareClearCache.Services
                     }
                 }
 
-                PortalController.UpdatePortalSetting(portalId, FeatureController.SETTING_STATUS, $"{resCloudFlare.Success}", true);
+                PortalController.UpdatePortalSetting(this.portalController, portalId, FeatureController.SETTING_STATUS, $"{resCloudFlare.Success}", true);
 
-                var ctlLog = new EventLogController();
                 var log = new LogInfo { LogTypeKey = FeatureController.LOGTYPEKEY };
-                ctlLog.AddLog(log);
+                logService.AddLog(log);
 
                 return resCloudFlare.Success;
             }
