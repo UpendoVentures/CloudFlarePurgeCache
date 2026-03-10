@@ -21,19 +21,23 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
+using DotNetNuke.Abstractions.Logging;
+using DotNetNuke.Abstractions.Portals;
+using DotNetNuke.Collections;
+using DotNetNuke.Common;
+using DotNetNuke.Common.Utilities;
+using DotNetNuke.Data;
+using DotNetNuke.Entities.Portals;
+using DotNetNuke.Framework.JavaScriptLibraries;
+using DotNetNuke.Instrumentation;
+using DotNetNuke.Security;
+using DotNetNuke.Web.Mvc.Framework.ActionFilters;
+using DotNetNuke.Web.Mvc.Framework.Controllers;
 using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
-using DotNetNuke.Web.Mvc.Framework.ActionFilters;
-using DotNetNuke.Web.Mvc.Framework.Controllers;
 using System.Web.Mvc;
-using DotNetNuke.Collections;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Data;
-using DotNetNuke.Framework.JavaScriptLibraries;
-using DotNetNuke.Instrumentation;
-using DotNetNuke.Security;
 using Upendo.Modules.CloudFlareClearCache.Components;
 using Upendo.Modules.CloudFlareClearCache.Models;
 using Upendo.Modules.CloudFlareClearCache.Services;
@@ -44,8 +48,21 @@ namespace Upendo.Modules.CloudFlareClearCache.Controllers
     public class ClearCacheController : DnnController
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ClearCacheController));
+        private readonly IJavaScriptLibraryHelper javaScript;
+        private readonly IPortalController portalController;
+        private readonly IEventLogService logService;
+
+        private IPortalAliasInfo CurrentPortalAlias => this.PortalSettings.PortalAlias;
+
+        public ClearCacheController(IJavaScriptLibraryHelper javaScript, IPortalController portalController, IEventLogService logService)
+        {
+            this.javaScript = javaScript;
+            this.portalController = portalController;
+            this.logService = logService;
+        }
 
         #region Properties
+        
         private Settings moduleSettings;
         private Settings ModuleSettings
         {
@@ -99,7 +116,7 @@ namespace Upendo.Modules.CloudFlareClearCache.Controllers
                 {
                     var originalStatus = GetPortalSetting(PortalSettings.PortalId);
 
-                    var ctlCf = new CloudFlareController();
+                    var ctlCf = new CloudFlareController(portalController, logService);
                     var result = ctlCf.PurgeCache(ModuleSettings, PortalSettings.PortalId);
 
                     var currentStatus = GetPortalSetting(PortalSettings.PortalId);
@@ -127,7 +144,7 @@ namespace Upendo.Modules.CloudFlareClearCache.Controllers
         [HttpGet]
         public ActionResult Index()
         {
-            DotNetNuke.Framework.JavaScriptLibraries.JavaScript.RequestRegistration(CommonJs.jQuery);
+            javaScript.RequestRegistration(CommonJs.jQuery);
 
             var model = new ClearCacheInfo();
 
@@ -143,15 +160,7 @@ namespace Upendo.Modules.CloudFlareClearCache.Controllers
                     ViewBag.ReadyToUse = true;
                 }
 
-                var url = PortalSettings.PortalAlias.HTTPAlias;
-                if (Request.IsSecureConnection)
-                {
-                    url = string.Concat("https://", url);
-                }
-                else
-                {
-                    url = string.Concat("http://", url);
-                }
+                var url = Globals.AddHTTP(CurrentPortalAlias.HttpAlias);
 
                 model.UrlPattern = url;
             }
@@ -171,7 +180,6 @@ namespace Upendo.Modules.CloudFlareClearCache.Controllers
             return (!string.IsNullOrEmpty(model.Config.ApiToken) && 
                     !string.IsNullOrEmpty(model.Config.Email) &&
                     !string.IsNullOrEmpty(model.Config.ZoneID));
-            return (!string.IsNullOrEmpty(model.Config.ApiToken) && !string.IsNullOrEmpty(model.Config.ZoneID));
         }
 
         private PortalSetting GetPortalSetting(int portalId)

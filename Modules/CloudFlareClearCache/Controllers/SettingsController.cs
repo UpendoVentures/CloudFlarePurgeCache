@@ -22,13 +22,14 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-using System;
 using DotNetNuke.Collections;
+using DotNetNuke.Common.Utilities;
 using DotNetNuke.Security;
 using DotNetNuke.Web.Mvc.Framework.ActionFilters;
 using DotNetNuke.Web.Mvc.Framework.Controllers;
+using System;
+using System.Web;
 using System.Web.Mvc;
-using DotNetNuke.Common.Utilities;
 using Upendo.Modules.CloudFlareClearCache.Components;
 
 namespace Upendo.Modules.CloudFlareClearCache.Controllers
@@ -70,11 +71,9 @@ namespace Upendo.Modules.CloudFlareClearCache.Controllers
         [DotNetNuke.Web.Mvc.Framework.ActionFilters.ValidateAntiForgeryToken]
         public ActionResult Settings(Models.Settings settings)
         {
-			var security = new PortalSecurity();
-
             if (!string.IsNullOrEmpty(settings.ZoneID))
             {
-                settings.ZoneID = security.InputFilter(settings.ZoneID.Trim(), PortalSecurity.FilterFlag.NoMarkup);
+                settings.ZoneID = HttpUtility.HtmlEncode(settings.ZoneID.Trim());
                 settings.ZoneID = FIPSCompliant.EncryptAES(settings.ZoneID, Config.GetDecryptionkey(), PortalSettings.GUID.ToString());
                 ModuleContext.Configuration.ModuleSettings[FeatureController.SETTING_ZONEID] = settings.ZoneID;
             }
@@ -89,14 +88,14 @@ namespace Upendo.Modules.CloudFlareClearCache.Controllers
             }
             else if (!string.IsNullOrEmpty(settings.ApiToken))
             {
-                settings.ApiToken = security.InputFilter(settings.ApiToken.Trim(), PortalSecurity.FilterFlag.NoMarkup);
+                settings.ApiToken = HttpUtility.HtmlEncode(settings.ApiToken.Trim());
                 settings.ApiToken = FIPSCompliant.EncryptAES(settings.ApiToken, Config.GetDecryptionkey(), PortalSettings.GUID.ToString());
                 ModuleContext.Configuration.ModuleSettings[FeatureController.SETTING_APITOKEN] = settings.ApiToken;
             }
 
             if (!string.IsNullOrEmpty(settings.Email))
             {
-                settings.Email = security.InputFilter(settings.Email.Trim(), PortalSecurity.FilterFlag.NoMarkup);
+                settings.Email = HttpUtility.HtmlEncode(settings.Email.Trim());
                 ModuleContext.Configuration.ModuleSettings[FeatureController.SETTING_EMAIL] = settings.Email;
             }
             else
